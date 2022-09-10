@@ -1,8 +1,12 @@
 import { Client } from 'twitter-api-sdk';
 import { makeAppDataSource } from '../util/DataSourceManager';
 import { DataSource } from 'typeorm';
+import { EmbedBuilder } from 'discord.js';
+
 import { SubscriptionFormEntity } from '../domain/SubscriptionFormEntity';
-import { getTweetsFromId } from '../twitter/TweetGetter';
+import { getTweetAfterLastChecked } from './TweetGetter';
+import { getUserInfoFromTwitter } from './UserInfoGetter';
+import { convertFromTweetToDiscordEmbed } from './TweetConverter';
 import { SubscriptionFormDto } from '../domain/SubscriptionFormDto';
 
 export const doSchduleJob = async () => {
@@ -19,46 +23,37 @@ export const doSchduleJob = async () => {
 
     const twitterClient: Client = new Client(process.env.TWITTER_BEARER_TOKEN);
 
-    subscriptionFormList.forEach((subscriptionForm) => {
-        getTweetAfterLastChecked(subscriptionForm, twitterClient);
-    });
+    for (const subscriptionForm of subscriptionFormList) {
+        const subscriptionFormDto: SubscriptionFormDto =
+            subscriptionForm.toSubscriptionFormDto();
+
+        const { tweetData, mediaData } = await getTweetAfterLastChecked(
+            subscriptionFormDto,
+            twitterClient
+        );
+
+        // 2개 모두 undefined인 경우, 새로운 트윗이 없다는 의미
+        if (tweetData === undefined && mediaData === undefined) {
+            console.log('No New Tweet. Breaking This Process.');
+            continue;
+        }
+
+        const userInfo = await getUserInfoFromTwitter(
+            twitterClient,
+            subscriptionFormDto.toGetAccountId
+        );
+        console.log('There Are New Tweets!');
+        for (const tweet of tweetData) {
+            const embed: EmbedBuilder = convertFromTweetToDiscordEmbed(
+                tweet,
+                mediaData.media,
+                userInfo
+            );
+            embed.setColor(parseInt(subscriptionFormDto.colorHex, 16));
+        }
+    }
 
     if (appDataSource.isInitialized) {
         await appDataSource.destroy();
     }
-};
-
-const getTweetAfterLastChecked = async (
-    form: SubscriptionFormEntity,
-    client: Client
-) => {
-    const previousScanTimeISOFormat = (): string => {
-        const nowTime: Date = new Date();
-        nowTime.setMinutes(nowTime.getMinutes() - 10);
-
-        return nowTime.toISOString();
-    };
-
-    console.log(previousScanTimeISOFormat());
-
-    const subscriptionFormDto: SubscriptionFormDto =
-        form.toSubscriptionFormDto();
-
-    // console.log(
-    //     'subscriptionFormDto.lastCheckedTime: ' +
-    //         subscriptionFormDto.lastCheckedTime
-    // );
-
-    // 이 과정을 통해 과거에 갖고온 트윗들을 제외시킴.
-    const { data: tweetData, includes: mediaData } = await getTweetsFromId(
-        client,
-        subscriptionFormDto.toGetAccountId,
-        subscriptionFormDto.lastCheckedTime === null || undefined
-            ? previousScanTimeISOFormat()
-            : subscriptionFormDto.lastCheckedTime.toISOString(),
-        subscriptionFormDto.lastCheckedTweetId
-    );
-
-    console.log('tweetData: ' + tweetData);
-    console.log('mediaData: ' + mediaData);
 };
