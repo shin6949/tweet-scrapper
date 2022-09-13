@@ -8,6 +8,5 @@ export const getUserInfoFromTwitter = async (
         'ids': [toGetId],
         'user.fields': ['name', 'profile_image_url', 'url'],
     });
-
-    return userList[0];
+    return userList.data[0];
 };

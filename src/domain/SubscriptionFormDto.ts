@@ -42,6 +42,14 @@ export class SubscriptionFormDto {
         return this._lastCheckedTime;
     }
 
+    public set lastCheckedTime(lastCheckedTime) {
+        this._lastCheckedTime = lastCheckedTime;
+    }
+
+    public set lastCheckedTweetId(lastCheckedTweetId) {
+        this._lastCheckedTweetId = lastCheckedTweetId;
+    }
+
     static from(
         authorName: string,
         authorProfileUrl: string,

@@ -1,13 +1,14 @@
 import { Client } from 'twitter-api-sdk';
 import { makeAppDataSource } from '../util/DataSourceManager';
 import { DataSource } from 'typeorm';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, WebhookClient } from 'discord.js';
 
 import { SubscriptionFormEntity } from '../domain/SubscriptionFormEntity';
 import { getTweetAfterLastChecked } from './TweetGetter';
 import { getUserInfoFromTwitter } from './UserInfoGetter';
 import { convertFromTweetToDiscordEmbed } from './TweetConverter';
 import { SubscriptionFormDto } from '../domain/SubscriptionFormDto';
+import { configureWebhookClient } from './WebhookClientJob';
 
 export const doSchduleJob = async () => {
     const appDataSource: DataSource = makeAppDataSource();
@@ -37,20 +38,37 @@ export const doSchduleJob = async () => {
             console.log('No New Tweet. Breaking This Process.');
             continue;
         }
+        console.log('There Are New Tweets!');
 
         const userInfo = await getUserInfoFromTwitter(
             twitterClient,
             subscriptionFormDto.toGetAccountId
         );
-        console.log('There Are New Tweets!');
+
+        let embedData: Array<EmbedBuilder> = [];
         for (const tweet of tweetData) {
-            const embed: EmbedBuilder = convertFromTweetToDiscordEmbed(
+            const embedBuilder: EmbedBuilder = convertFromTweetToDiscordEmbed(
                 tweet,
                 mediaData.media,
-                userInfo
+                userInfo,
+                subscriptionFormDto
             );
-            embed.setColor(parseInt(subscriptionFormDto.colorHex, 16));
+            embedData.push(embedBuilder);
         }
+
+        const webhook: WebhookClient = configureWebhookClient(
+            subscriptionFormDto,
+            embedData
+        );
+
+        webhook.send({
+            content: subscriptionFormDto.content,
+            embeds: embedData,
+        });
+
+        subscriptionFormDto.lastCheckedTime = new Date();
+        subscriptionFormDto.lastCheckedTweetId = tweetData[tweetData.length].id;
+        appDataSource.manager.update();
     }
 
     if (appDataSource.isInitialized) {
