@@ -8,11 +8,14 @@ export const convertFromTweetToDiscordEmbed = (
     userInfo,
     subscriptionFormDto: SubscriptionFormDto
 ) => {
-    const author = userInfo.name + '(' + userInfo.username + ')';
+    const tweetUrl = 'https://twitter.com/twitter/status/' + tweetData.id;
+    const author = userInfo.username;
+    const title = userInfo.name + '의 새로운 트윗!';
 
     const embed = new EmbedBuilder().setAuthor({
         name: author,
         iconURL: userInfo.profile_image_url,
+        url: 'https://twitter.com/' + userInfo.username,
     });
 
     if (tweetData.attachments?.media_keys !== undefined) {
@@ -21,8 +24,15 @@ export const convertFromTweetToDiscordEmbed = (
         );
     }
     embed.setDescription(tweetData.text);
-    embed.setURL(tweetData.entities.urls[0].url);
+    embed.setTitle(title);
+    embed.setURL(tweetUrl);
     embed.setColor(parseInt(subscriptionFormDto.colorHex, 16));
+    embed.setFooter({
+        text: tweetData.source,
+        iconURL:
+            'https://pbs.twimg.com/profile_images/1354481238233337856/-mUgc3Pc_400x400.jpg',
+    });
+    embed.setTimestamp(Date.parse(tweetData.created_at));
 
     return embed;
 };

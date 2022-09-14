@@ -28,6 +28,8 @@ export const doSchduleJob = async () => {
         const subscriptionFormDto: SubscriptionFormDto =
             subscriptionForm.toSubscriptionFormDto();
 
+        const checkedTime = new Date();
+
         const { tweetData, mediaData } = await getTweetAfterLastChecked(
             subscriptionFormDto,
             twitterClient
@@ -36,6 +38,10 @@ export const doSchduleJob = async () => {
         // 2개 모두 undefined인 경우, 새로운 트윗이 없다는 의미
         if (tweetData === undefined && mediaData === undefined) {
             console.log('No New Tweet. Breaking This Process.');
+            subscriptionFormDto.lastCheckedTime = checkedTime;
+            await appDataSource.manager.save(
+                subscriptionFormDto.toSubscriptionFormEntity()
+            );
             continue;
         }
         console.log('There Are New Tweets!');
@@ -62,13 +68,16 @@ export const doSchduleJob = async () => {
         );
 
         webhook.send({
-            content: subscriptionFormDto.content,
             embeds: embedData,
         });
 
-        subscriptionFormDto.lastCheckedTime = new Date();
-        subscriptionFormDto.lastCheckedTweetId = tweetData[tweetData.length].id;
-        appDataSource.manager.update();
+        subscriptionFormDto.lastCheckedTime = checkedTime;
+
+        if (appDataSource.isInitialized) {
+            await appDataSource.manager.save(
+                subscriptionFormDto.toSubscriptionFormEntity()
+            );
+        }
     }
 
     if (appDataSource.isInitialized) {
