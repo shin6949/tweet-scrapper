@@ -6,7 +6,7 @@ networks:
 
 services:
     tweetscrapper:
-        image: shin6949/tweet-scrapper:lastest
+        image: ghcr.io/shin6949/tweet-scrapper:lastest
         container_name: tweet_scrapper
         restart: always
         environment:
