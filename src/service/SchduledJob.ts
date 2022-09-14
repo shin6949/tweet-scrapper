@@ -11,6 +11,7 @@ import { SubscriptionFormDto } from '../domain/SubscriptionFormDto';
 import { configureWebhookClient } from './WebhookClientJob';
 
 export const doSchduleJob = async () => {
+    console.log(new Date().toLocaleTimeString() + ' Job Start.');
     const appDataSource: DataSource = makeAppDataSource();
     await appDataSource.initialize();
 
@@ -37,7 +38,11 @@ export const doSchduleJob = async () => {
 
         // 2개 모두 undefined인 경우, 새로운 트윗이 없다는 의미
         if (tweetData === undefined && mediaData === undefined) {
-            console.log('No New Tweet. Breaking This Process.');
+            console.log(
+                'No New Tweet. ID: ' +
+                    subscriptionFormDto.toGetAccountId +
+                    ' Breaking This Process.'
+            );
             subscriptionFormDto.lastCheckedTime = checkedTime;
             await appDataSource.manager.save(
                 subscriptionFormDto.toSubscriptionFormEntity()

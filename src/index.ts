@@ -9,7 +9,6 @@ import {
 import { doSchduleJob } from './service/SchduledJob';
 
 const main = async () => {
-    // ENV Load
     (() => {
         dotenv.config({ path: path.join(__dirname, '../', 'app.env') });
         dotenv.config({ path: path.join(__dirname, '../', 'db.env') });
@@ -20,13 +19,10 @@ const main = async () => {
         twitterEnvChecker();
     })();
 
-    // Cron Set
-    const cronSchdule = '* */' + process.env.DELAY_MINUTES + ' * * *';
-    // const task = cron.schedule(cronSchdule, doSchduleJob);
+    const cronSchdule = '*/' + process.env.DELAY_MINUTES + ' * * * *';
+    const task = cron.schedule(cronSchdule, doSchduleJob);
 
-    doSchduleJob();
-
-    // task.start();
+    task.start();
 };
 
 main();

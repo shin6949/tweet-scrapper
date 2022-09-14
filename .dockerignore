@@ -1,0 +1,8 @@
+assets
+node_modules
+data
+*.env
+eslintrc.json
+.prettierrc.json
+docker-compose.yaml
+yarn-error.log

@@ -19,8 +19,6 @@ export const getTweetAfterLastChecked = async (
         form.lastCheckedTime === null || form.lastCheckedTime === undefined
             ? previousScanTimeISOFormat()
             : form.lastCheckedTime.toISOString()
-        // TEST VALUE
-        // '2022-06-10T09:05:09.043Z',
     );
 
     return { tweetData, mediaData };
