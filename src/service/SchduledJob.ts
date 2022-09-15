@@ -74,6 +74,8 @@ export const doSchduleJob = async () => {
 
         webhook.send({
             embeds: embedData,
+            username: subscriptionFormDto.authorName,
+            avatarURL: subscriptionFormDto.authorProfileUrl,
         });
 
         subscriptionFormDto.lastCheckedTime = checkedTime;

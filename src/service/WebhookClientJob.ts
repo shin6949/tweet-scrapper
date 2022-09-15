@@ -9,10 +9,5 @@ export const configureWebhookClient = (
         url: subscriptionFormDto.webhookUrl,
     });
 
-    webhook.edit({
-        name: subscriptionFormDto.authorName,
-        avatar: subscriptionFormDto.authorProfileUrl,
-    });
-
     return webhook;
 };
