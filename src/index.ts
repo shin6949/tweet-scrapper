@@ -19,7 +19,7 @@ const main = async () => {
         twitterEnvChecker();
     })();
 
-    const cronSchdule = '*/' + process.env.DELAY_MINUTES + ' * * * *';
+    const cronSchdule = '59 */' + process.env.DELAY_MINUTES + ' * * * *';
     const task = cron.schedule(cronSchdule, doSchduleJob);
 
     // doSchduleJob();
