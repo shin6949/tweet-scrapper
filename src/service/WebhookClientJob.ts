@@ -1,13 +1,13 @@
 import { EmbedBuilder, WebhookClient } from 'discord.js';
-import { SubscriptionFormDto } from '../domain/SubscriptionFormDto';
+import { SubscriptionFormDto } from '../dto/SubscriptionFormDto';
 
 export const configureWebhookClient = (
-    subscriptionFormDto: SubscriptionFormDto,
-    embedData: Array<EmbedBuilder>
+  subscriptionFormDto: SubscriptionFormDto,
+  embedData: Array<EmbedBuilder>
 ): WebhookClient => {
-    const webhook: WebhookClient = new WebhookClient({
-        url: subscriptionFormDto.webhookUrl,
-    });
+  const webhook: WebhookClient = new WebhookClient({
+    url: subscriptionFormDto.webhookUrl,
+  });
 
-    return webhook;
+  return webhook;
 };

@@ -1,6 +1,6 @@
 {
     "name": "dynamo_store_tweet_scrapper",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "",
     "type": "commonjs",
     "devDependencies": {
@@ -19,6 +19,8 @@
     "dependencies": {
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.13",
+        "axios": "0.27.2",
+        "class-transformer": "^0.5.1",
         "discord.js": "^14.3.0",
         "dotenv": "^16.0.2",
         "eslint-config-prettier": "^8.5.0",
