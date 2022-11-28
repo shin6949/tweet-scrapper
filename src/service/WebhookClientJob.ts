@@ -1,5 +1,5 @@
 import { EmbedBuilder, WebhookClient } from 'discord.js';
-import { SubscriptionFormDto } from '../dto/SubscriptionFormDto';
+import { SubscriptionFormDto } from '../dto/SubscriptionFormDTO';
 
 export const configureWebhookClient = (
   subscriptionFormDto: SubscriptionFormDto,

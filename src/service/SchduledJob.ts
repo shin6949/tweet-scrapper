@@ -7,7 +7,7 @@ import { SubscriptionFormEntity } from '../domain/SubscriptionFormEntity';
 import { getTweetAfterLastChecked } from './TweetGetter';
 import { getUserInfoFromTwitter } from './UserInfoGetter';
 import { convertFromTweetToDiscordEmbed } from './TweetConverter';
-import { SubscriptionFormDto } from '../dto/SubscriptionFormDto';
+import { SubscriptionFormDto } from '../dto/SubscriptionFormDTO';
 import { configureWebhookClient } from './WebhookClientJob';
 
 export const doSchduleJob = async () => {

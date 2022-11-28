@@ -7,9 +7,13 @@ export class PapagoRequestHeader {
   @Exclude()
   private _naverClientSecret: String;
 
-  constructor(clientId: String, clientSecret: String) {
-    this._naverClientId = clientId;
-    this._naverClientSecret = clientSecret;
+  @Exclude()
+  private _contentType: String;
+
+  constructor(naverClientId: String, naverClientSecret: String) {
+    this._naverClientId = naverClientId;
+    this._naverClientSecret = naverClientSecret;
+    this._contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
   }
 
   @Expose({ name: 'X-Naver-Client-Id' })
@@ -20,5 +24,10 @@ export class PapagoRequestHeader {
   @Expose({ name: 'X-Naver-Client-Secret' })
   public get naverClientSecret(): String {
     return this._naverClientSecret;
+  }
+
+  @Expose({ name: 'Content-Type' })
+  public get contentType(): String {
+    return this._contentType;
   }
 }

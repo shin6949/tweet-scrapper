@@ -5,7 +5,7 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm';
-import { SubscriptionFormDto } from '../dto/SubscriptionFormDto';
+import { SubscriptionFormDto } from '../dto/SubscriptionFormDTO';
 
 @Entity({ name: 'subscription_form' })
 export class SubscriptionFormEntity extends BaseEntity {
@@ -58,6 +58,14 @@ export class SubscriptionFormEntity extends BaseEntity {
   @CreateDateColumn({ name: 'created_at' })
   private _createdAt: Date;
 
+  @Column({
+    type: 'tinyint',
+    name: 'need_papago',
+    nullable: true,
+    default: null,
+  })
+  private _needPapago: boolean;
+
   static from(
     id: string,
     authorName: string,
@@ -65,7 +73,8 @@ export class SubscriptionFormEntity extends BaseEntity {
     colorHex: string,
     webhookUrl: string,
     toGetAccountId: string,
-    lastCheckedTime: Date
+    lastCheckedTime: Date,
+    needPapago: boolean
   ) {
     const subscriptionForm = new SubscriptionFormEntity();
     subscriptionForm._id = id;
@@ -75,6 +84,7 @@ export class SubscriptionFormEntity extends BaseEntity {
     subscriptionForm._webhookUrl = webhookUrl;
     subscriptionForm._toGetAccountId = toGetAccountId;
     subscriptionForm._lastCheckedTime = lastCheckedTime;
+    subscriptionForm._needPapago = needPapago;
     return subscriptionForm;
   }
 
@@ -86,7 +96,8 @@ export class SubscriptionFormEntity extends BaseEntity {
       this._colorHex,
       this._webhookUrl,
       this._toGetAccountId,
-      this._lastCheckedTime
+      this._lastCheckedTime,
+      this._needPapago
     );
   }
 }

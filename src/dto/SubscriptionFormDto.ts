@@ -8,6 +8,7 @@ export class SubscriptionFormDto {
   private _webhookUrl: string;
   private _toGetAccountId: string;
   private _lastCheckedTime: Date;
+  private _needPapago: boolean;
 
   public get id() {
     return this._id;
@@ -37,6 +38,10 @@ export class SubscriptionFormDto {
     return this._lastCheckedTime;
   }
 
+  public get needPapago() {
+    return this._needPapago;
+  }
+
   public set id(id) {
     this._id = id;
   }
@@ -52,7 +57,8 @@ export class SubscriptionFormDto {
     colorHex: string,
     webhookUrl: string,
     toGetAccountId: string,
-    lastCheckedTime: Date
+    lastCheckedTime: Date,
+    needPapago: boolean
   ) {
     const subscriptionFormDto: SubscriptionFormDto = new SubscriptionFormDto();
     subscriptionFormDto._id = id;
@@ -62,6 +68,7 @@ export class SubscriptionFormDto {
     subscriptionFormDto._webhookUrl = webhookUrl;
     subscriptionFormDto._toGetAccountId = toGetAccountId;
     subscriptionFormDto._lastCheckedTime = lastCheckedTime;
+    subscriptionFormDto._needPapago = needPapago;
     return subscriptionFormDto;
   }
 
@@ -73,7 +80,8 @@ export class SubscriptionFormDto {
       this._colorHex,
       this._webhookUrl,
       this._toGetAccountId,
-      this._lastCheckedTime
+      this._lastCheckedTime,
+      this._needPapago
     );
   }
 }

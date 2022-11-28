@@ -1,28 +1,29 @@
-import axios from 'axios';
 import { instanceToPlain, plainToClass } from 'class-transformer';
-import {
-  PapagoLanguageDetectRequestDTO,
-  PapagoLanguageDetectResponseDTO,
-} from '../dto/PapagoLanguageDetectDTO';
+import axios from 'axios';
 import { PapagoRequestHeader } from '../dto/PapagoRequestHeader';
+import {
+  PapagoTranslateRequestDTO,
+  PapagoTranslateResponseDTO,
+} from '../dto/PapagoTranslateRequestDTO';
 
-export const doPapagoLanguageDetect = (
+export const doPapagoTranslate = (
+  source: String,
   query: String
-): PapagoLanguageDetectResponseDTO => {
+): PapagoTranslateResponseDTO => {
   const requestHeader = new PapagoRequestHeader(
     process.env.NAVER_CLIENT_ID,
     process.env.NAVER_CLIENT_SECRET
   );
 
-  const requestBody = new PapagoLanguageDetectRequestDTO(query);
+  const requestBody = new PapagoTranslateRequestDTO(source, 'ko', query);
 
   axios
-    .post('https://openapi.naver.com/v1/papago/detectLangs', null, {
+    .post('https://openapi.naver.com/v1/papago/n2mt', null, {
       headers: instanceToPlain(requestHeader),
       params: instanceToPlain(requestBody),
     })
     .then((res) => {
-      return plainToClass(PapagoLanguageDetectResponseDTO, res.data);
+      return plainToClass(PapagoTranslateResponseDTO, res.data);
     })
     .catch((err) => console.log(err));
 

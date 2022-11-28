@@ -1,5 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
-import { SubscriptionFormDto } from '../dto/SubscriptionFormDto';
+import { SubscriptionFormDto } from '../dto/SubscriptionFormDTO';
 
 // 트윗 딱 하나만.
 export const convertFromTweetToDiscordEmbed = (

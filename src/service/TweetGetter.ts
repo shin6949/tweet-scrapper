@@ -1,5 +1,5 @@
 import { Client } from 'twitter-api-sdk';
-import { SubscriptionFormDto } from '../dto/SubscriptionFormDto';
+import { SubscriptionFormDto } from '../dto/SubscriptionFormDTO';
 
 export const getTweetAfterLastChecked = async (
   form: SubscriptionFormDto,
