@@ -13,6 +13,7 @@ const main = async () => {
     dotenv.config({ path: path.join(__dirname, '../', 'app.env') });
     dotenv.config({ path: path.join(__dirname, '../', 'db.env') });
     dotenv.config({ path: path.join(__dirname, '../', 'twitter.env') });
+    dotenv.config({ path: path.join(__dirname, '../', 'naver.env') });
 
     dbEnvCheck();
     appEnvChecker();
@@ -22,9 +23,9 @@ const main = async () => {
   const cronSchdule = '59 */' + process.env.DELAY_MINUTES + ' * * * *';
   const task = cron.schedule(cronSchdule, doSchduleJob);
 
-  // doSchduleJob();
+  doSchduleJob();
 
-  task.start();
+  // task.start();
 };
 
 main();

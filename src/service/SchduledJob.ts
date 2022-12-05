@@ -9,6 +9,7 @@ import { getUserInfoFromTwitter } from './UserInfoGetter';
 import { convertFromTweetToDiscordEmbed } from './TweetConverter';
 import { SubscriptionFormDto } from '../dto/SubscriptionFormDTO';
 import { configureWebhookClient } from './WebhookClientJob';
+import { translateTweet } from './TranslateService';
 
 export const doSchduleJob = async () => {
   console.log(new Date().toLocaleTimeString() + ' Job Start.');
@@ -62,7 +63,8 @@ export const doSchduleJob = async () => {
         tweet,
         mediaData.media,
         userInfo,
-        subscriptionFormDto
+        subscriptionFormDto,
+        subscriptionFormDto.needPapago ? translateTweet(tweet.text) : undefined
       );
       embedData.push(embedBuilder);
     }

@@ -7,7 +7,7 @@ import {
 import { PapagoRequestHeader } from '../dto/PapagoRequestHeader';
 
 export const doPapagoLanguageDetect = (
-  query: String
+  query: string
 ): PapagoLanguageDetectResponseDTO => {
   const requestHeader = new PapagoRequestHeader(
     process.env.NAVER_CLIENT_ID,
@@ -26,5 +26,5 @@ export const doPapagoLanguageDetect = (
     })
     .catch((err) => console.log(err));
 
-  return null;
+  return new PapagoLanguageDetectResponseDTO(null);
 };

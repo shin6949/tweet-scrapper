@@ -4,11 +4,11 @@ import { PapagoRequestHeader } from '../dto/PapagoRequestHeader';
 import {
   PapagoTranslateRequestDTO,
   PapagoTranslateResponseDTO,
-} from '../dto/PapagoTranslateRequestDTO';
+} from '../dto/PapagoTranslateDTO';
 
 export const doPapagoTranslate = (
-  source: String,
-  query: String
+  source: string,
+  query: string
 ): PapagoTranslateResponseDTO => {
   const requestHeader = new PapagoRequestHeader(
     process.env.NAVER_CLIENT_ID,
@@ -23,7 +23,11 @@ export const doPapagoTranslate = (
       params: instanceToPlain(requestBody),
     })
     .then((res) => {
-      return plainToClass(PapagoTranslateResponseDTO, res.data);
+      const result: PapagoTranslateResponseDTO = plainToClass(
+        PapagoTranslateResponseDTO,
+        res.data
+      );
+      return result;
     })
     .catch((err) => console.log(err));
 

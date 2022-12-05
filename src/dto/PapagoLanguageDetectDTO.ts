@@ -2,32 +2,32 @@ import { Exclude, Expose } from 'class-transformer';
 
 export class PapagoLanguageDetectRequestDTO {
   @Exclude()
-  private _query: String;
+  private _query: string;
 
-  constructor(query: String) {
+  constructor(query: string) {
     this._query = query;
   }
 
   @Expose({ name: 'query' })
-  public get query() {
+  public get query(): string {
     return this._query;
   }
 }
 
 export class PapagoLanguageDetectResponseDTO {
   @Exclude()
-  private _langCode: String;
+  private _langCode: string;
 
-  constructor(langCode: String) {
+  constructor(langCode: string) {
     this._langCode = langCode;
   }
 
   @Expose({ name: 'langCode' })
-  public set langCode(langCode: String) {
+  public set langCode(langCode: string) {
     this._langCode = langCode;
   }
 
-  public get langCode() {
+  public get langCode(): string {
     return this._langCode;
   }
 }
