@@ -15,19 +15,13 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/Ver.}" >> $GITHUB_ENV
 
-      - name: Set up QEMU
-        id: qemu
-        uses: docker/setup-qemu-action@v2
-        with:
-          image: tonistiigi/binfmt:latest
-          platforms: arm64
+      # - name: Set up QEMU
+      #   id: qemu
+      #   uses: docker/setup-qemu-action@v2
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          platforms: linux/amd64,linux/arm64
-          version: v0.9.1
+      # - name: Set up Docker Buildx
+      #   id: buildx
+      #   uses: docker/setup-buildx-action@v2
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -36,7 +30,14 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PERSONAL_TOKEN }}
 
+      # - name: Docker Build
+      #   run: |
+      #     docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/tweet-scrapper:latest --push .
+      #     docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/tweet-scrapper:${{ env.RELEASE_VERSION }} --push .
+
       - name: Docker Build
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/tweet-scrapper:latest --push .
-          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/tweet-scrapper:${{ env.RELEASE_VERSION }} --push .
+          docker build -t ghcr.io/${{ github.repository_owner }}/tweet-scrapper:${{ env.RELEASE_VERSION }} .
+          docker push ghcr.io/${{ github.repository_owner }}/tweet-scrapper:${{ env.RELEASE_VERSION }}
+          docker tag ghcr.io/${{ github.repository_owner }}/tweet-scrapper:${{ env.RELEASE_VERSION }} ghcr.io/${{ github.repository_owner }}/tweet-scrapper:latest
+          docker push ghcr.io/${{ github.repository_owner }}/tweet-scrapper:latest
