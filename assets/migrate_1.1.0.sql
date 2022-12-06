@@ -1,0 +1,1 @@
+ALTER TABLE subscription_form ADD COLUMN need_papago tinyint NOT NULL default 0;
