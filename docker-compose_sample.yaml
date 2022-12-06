@@ -1,22 +1,24 @@
 version: '3.1'
 
 networks:
-    db-net:
-        external: true
+  db-net:
+    external: true
 
 services:
-    tweetscrapper:
-        image: ghcr.io/shin6949/tweet-scrapper:latest
-        container_name: tweet_scrapper
-        restart: always
-        environment:
-            - 'TWITTER_BEARER_TOKEN='
-            - 'DB_HOST=mariadb'
-            - 'DB_PORT=3306'
-            - 'DB_USER=root'
-            - 'DB_PASSWORD=test1234'
-            - 'DB_NAME='
-            - 'DELAY_MINUTES=10'
-            - 'TZ=Asia/Seoul'
-        networks:
-            - db-net
+  tweetscrapper:
+    image: ghcr.io/shin6949/tweet-scrapper:latest
+    container_name: tweet_scrapper
+    restart: always
+    environment:
+      - 'TWITTER_BEARER_TOKEN='
+      - 'NAVER_CLIENT_ID='
+      - 'NAVER_CLIENT_SECRET='
+      - 'DB_HOST=mariadb'
+      - 'DB_PORT=3306'
+      - 'DB_USER=root'
+      - 'DB_PASSWORD=test1234'
+      - 'DB_NAME='
+      - 'DELAY_MINUTES=10'
+      - 'TZ=Asia/Seoul'
+    networks:
+      - db-net
