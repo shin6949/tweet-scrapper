@@ -6,9 +6,9 @@ import {
 } from '../dto/PapagoLanguageDetectDTO';
 import { PapagoRequestHeader } from '../dto/PapagoRequestHeader';
 
-export const doPapagoLanguageDetect = (
+export const doPapagoLanguageDetect = async (
   query: string
-): PapagoLanguageDetectResponseDTO => {
+): Promise<PapagoLanguageDetectResponseDTO> => {
   const requestHeader = new PapagoRequestHeader(
     process.env.NAVER_CLIENT_ID,
     process.env.NAVER_CLIENT_SECRET
@@ -16,7 +16,7 @@ export const doPapagoLanguageDetect = (
 
   const requestBody = new PapagoLanguageDetectRequestDTO(query);
 
-  axios
+  const result = await axios
     .post('https://openapi.naver.com/v1/papago/detectLangs', null, {
       headers: instanceToPlain(requestHeader),
       params: instanceToPlain(requestBody),
@@ -24,7 +24,10 @@ export const doPapagoLanguageDetect = (
     .then((res) => {
       return plainToClass(PapagoLanguageDetectResponseDTO, res.data);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.error(err);
+      return new PapagoLanguageDetectResponseDTO(null);
+    });
 
-  return new PapagoLanguageDetectResponseDTO(null);
+  return result;
 };

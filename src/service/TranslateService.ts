@@ -3,9 +3,12 @@ import { PapagoTranslateResponseDTO } from '../dto/PapagoTranslateDTO';
 import { doPapagoLanguageDetect } from './PapagoLanguageDetectService';
 import { doPapagoTranslate } from './PapagoTranslateService';
 
-export const translateTweet = (toTranslateData: string): string => {
+export const translateTweet = async (
+  toTranslateData: string
+): Promise<string> => {
   const languageDetectResult: PapagoLanguageDetectResponseDTO =
-    doPapagoLanguageDetect(toTranslateData);
+    await doPapagoLanguageDetect(toTranslateData);
+
   console.log(
     '"' +
       toTranslateData +
@@ -22,7 +25,7 @@ export const translateTweet = (toTranslateData: string): string => {
     return null;
   }
 
-  const translateResult: PapagoTranslateResponseDTO = doPapagoTranslate(
+  const translateResult: PapagoTranslateResponseDTO = await doPapagoTranslate(
     languageDetectResult.langCode,
     toTranslateData
   );

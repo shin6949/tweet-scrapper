@@ -59,12 +59,16 @@ export const doSchduleJob = async () => {
 
     let embedData: Array<EmbedBuilder> = [];
     for (const tweet of tweetData) {
+      const translatedText = subscriptionFormDto.needPapago
+        ? await translateTweet(tweet.text)
+        : undefined;
+
       const embedBuilder: EmbedBuilder = convertFromTweetToDiscordEmbed(
         tweet,
         mediaData.media,
         userInfo,
         subscriptionFormDto,
-        subscriptionFormDto.needPapago ? translateTweet(tweet.text) : undefined
+        translatedText
       );
       embedData.push(embedBuilder);
     }

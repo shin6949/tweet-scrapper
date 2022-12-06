@@ -6,10 +6,10 @@ import {
   PapagoTranslateResponseDTO,
 } from '../dto/PapagoTranslateDTO';
 
-export const doPapagoTranslate = (
+export const doPapagoTranslate = async (
   source: string,
   query: string
-): PapagoTranslateResponseDTO => {
+): Promise<PapagoTranslateResponseDTO> => {
   const requestHeader = new PapagoRequestHeader(
     process.env.NAVER_CLIENT_ID,
     process.env.NAVER_CLIENT_SECRET
@@ -17,7 +17,7 @@ export const doPapagoTranslate = (
 
   const requestBody = new PapagoTranslateRequestDTO(source, 'ko', query);
 
-  axios
+  const result = await axios
     .post('https://openapi.naver.com/v1/papago/n2mt', null, {
       headers: instanceToPlain(requestHeader),
       params: instanceToPlain(requestBody),
@@ -29,7 +29,10 @@ export const doPapagoTranslate = (
       );
       return result;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      return new PapagoTranslateResponseDTO();
+    });
 
-  return null;
+  return result;
 };
