@@ -36,7 +36,6 @@ export const convertFromTweetToDiscordEmbed = (
     );
   }
 
-  console.log(translatedText);
   if (translatedText !== undefined && translatedText !== null) {
     embed.addFields({
       name: '번역본',
