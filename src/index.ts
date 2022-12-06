@@ -23,9 +23,9 @@ const main = async () => {
   const cronSchdule = '59 */' + process.env.DELAY_MINUTES + ' * * * *';
   const task = cron.schedule(cronSchdule, doSchduleJob);
 
-  doSchduleJob();
+  // doSchduleJob();
 
-  // task.start();
+  task.start();
 };
 
 main();
