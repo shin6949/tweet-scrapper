@@ -5,4 +5,5 @@ data
 eslintrc.json
 .prettierrc.json
 docker-compose.yaml
+docker-compose_sample.yaml
 yarn-error.log
