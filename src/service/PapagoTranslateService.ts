@@ -15,7 +15,11 @@ export const doPapagoTranslate = async (
     process.env.NAVER_CLIENT_SECRET
   );
 
-  const requestBody = new PapagoTranslateRequestDTO(source, 'ko', query);
+  const requestBody = new PapagoTranslateRequestDTO(
+    source,
+    'ko',
+    query.replace(/\[/g, '%open').replace(/\]/, '%close')
+  );
 
   const result = await axios
     .post('https://openapi.naver.com/v1/papago/n2mt', null, {

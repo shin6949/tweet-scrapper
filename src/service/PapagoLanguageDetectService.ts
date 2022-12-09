@@ -14,7 +14,10 @@ export const doPapagoLanguageDetect = async (
     process.env.NAVER_CLIENT_SECRET
   );
 
-  const requestBody = new PapagoLanguageDetectRequestDTO(query);
+  const requestBody = new PapagoLanguageDetectRequestDTO(
+    // query.replace(/\[/g, '%5B').replace(/\]/g, '%5D')
+    query.replace(/\[/g, '%open').replace(/\]/, '%close')
+  );
 
   const result = await axios
     .post('https://openapi.naver.com/v1/papago/detectLangs', null, {

@@ -9,7 +9,7 @@ export const convertFromTweetToDiscordEmbed = (
   subscriptionFormDto: SubscriptionFormDto,
   translatedText?: string
 ) => {
-  const tweetUrl = 'https://twitter.com/twitter/status/' + tweetData.id;
+  const tweetUrl = 'https://twitter.com/twitter/status/'.concat(tweetData.id);
   const author = userInfo.username;
   const title = userInfo.name + '의 새로운 트윗!';
 
@@ -24,7 +24,8 @@ export const convertFromTweetToDiscordEmbed = (
     .setURL(tweetUrl)
     .setColor(parseInt(subscriptionFormDto.colorHex, 16))
     .setFooter({
-      text: tweetData.source,
+      text:
+        tweetData.source === undefined || null ? 'Twitter' : tweetData.source,
       iconURL:
         'https://pbs.twimg.com/profile_images/1354481238233337856/-mUgc3Pc_400x400.jpg',
     })
@@ -39,7 +40,7 @@ export const convertFromTweetToDiscordEmbed = (
   if (translatedText !== undefined && translatedText !== null) {
     embed.addFields({
       name: '번역본',
-      value: translatedText,
+      value: translatedText.replace(/\%open/gi, '[').replace(/\%close/gi, ']'),
       inline: false,
     });
   }
