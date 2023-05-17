@@ -1,4 +1,3 @@
-import * as cron from 'node-cron';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import {
@@ -19,10 +18,8 @@ const main = async () => {
     appEnvChecker();
     twitterEnvChecker();
   })();
-  
-  doSchduleJob();
 
-  task.start();
+  doSchduleJob();
 };
 
 main();
